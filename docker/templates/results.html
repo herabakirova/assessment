@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Truck Results</title>
+</head>
+<body>
+    <h1>Food Truck Results</h1>
+    <ul>
+        {% if trucks %}
+            {% for truck in trucks %}
+                <li>{{ truck['Applicant'] }} - {{ truck['Location'] }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No food trucks found for the given cuisine.</li>
+        {% endif %}
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>
