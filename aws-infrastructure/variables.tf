@@ -40,15 +40,15 @@ variable subnet2_name {
   description = "provide subnet 2 name"
 }
 
-variable subnet3_cidr {
+variable subnet1_az {
   type        = string
-  default     = "10.0.3.0/24"
+  default     = "us-east-2a"
   description = "provide cidr block for subnet 3"
 }
 
-variable subnet3_name {
+variable subnet2_az {
   type        = string
-  default     = "subnet3"
+  default     = "us-east-2a"
   description = "provide subnet 3 name"
 }
 
