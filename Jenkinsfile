@@ -43,6 +43,9 @@ pipeline {
         }
     }
         stage('Build and Push Docker Image to ECR') {
+            when {
+                expression { return params.TERRAFORM_ACTION == 'apply' }
+            }
             steps {
                 withCredentials([
                     usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')
@@ -59,7 +62,10 @@ pipeline {
          }
         }
     stage('Create K8 secrets') {
-      steps {
+            when {
+                expression { return params.TERRAFORM_ACTION == 'apply' }
+            }
+          steps {
           withCredentials([
               usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')
               ]) {
@@ -78,12 +84,16 @@ pipeline {
     }
         stage('Package and Install Helm Chart') {
             steps {
+            when {
+                expression { return params.TERRAFORM_ACTION == 'apply' }
+            }
                 withCredentials([
                     usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')
                     ]) {
                 sh '''
                 helm package ./food-truck-application
                 helm install food-truck-application ./food-truck-application-*.tgz
+                kubectl get service
                 '''
             }
         }
