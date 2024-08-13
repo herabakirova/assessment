@@ -48,7 +48,7 @@ variable subnet1_az {
 
 variable subnet2_az {
   type        = string
-  default     = "us-east-2a"
+  default     = "us-east-2b"
   description = "provide subnet 3 name"
 }
 
