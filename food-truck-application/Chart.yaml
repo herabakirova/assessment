@@ -1,0 +1,7 @@
+apiVersion: v2
+name: food-truck-application
+description: A Helm chart for Kubernetes to deploy the Food Truck Discovery App
+version: 0.1.0
+appVersion: "1.0"
+
+
