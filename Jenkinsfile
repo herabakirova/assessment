@@ -1,24 +1,47 @@
 pipeline {
     agent any
-
+    parameters {
+        choice(
+            name: 'TERRAFORM_ACTION',
+            choices: ['apply', 'destroy', 'plan'],
+            description: 'Choose the Terraform action to perform'
+        )
+    }
     stages {
         stage("Checkout SCM") {
             steps {
                 git branch: 'test', url: 'https://github.com/herabakirova/assessment.git'
             }
         }
-        stage("Terraform init and apply") {
-            steps {
-                withCredentials([
-                    usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    sh '''
-                    cd aws-infrastructure/
-                    terraform init
-                    terraform apply --auto-approve
-                    '''
+    stage("Terraform init and apply/destroy") {
+        steps {
+            withCredentials([
+                usernamePassword(credentialsId: 'aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')
+            ]) {
+                script {
+                    if (params.TERRAFORM_ACTION == 'apply') {
+                        sh '''
+                        cd aws-infrastructure/
+                        terraform init
+                        sh 'terraform apply -auto-approve
+                        '''
+                    } else if (params.TERRAFORM_ACTION == 'destroy') {
+                        sh '''
+                        cd aws-infrastructure/
+                        terraform init
+                        terraform destroy -auto-approve
+                        '''
+                    }   else if (params.TERRAFORM_ACTION == 'plan') {
+                        sh '''
+                        cd aws-infrastructure/
+                        terraform init
+                        terraform plan 
+                        '''
+                    }
                 }
             }
         }
+    }
         stage('Build and Push Docker Image to ECR') {
             steps {
                 withCredentials([
