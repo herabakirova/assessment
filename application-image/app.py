@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 import pandas as pd
 import boto3
 import io
@@ -31,6 +31,13 @@ def find_trucks():
     results = df[df['FoodItems'].str.contains(cuisine, case=False, na=False)]
     return render_template('results.html', trucks=results.to_dict(orient='records'))
 
+@app.route('/ready')
+def ready():
+    return 'Ready', 200
+
+@app.route('/healthz')
+def healthz():
+    return 'Healthy', 200
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
-

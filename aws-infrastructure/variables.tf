@@ -75,3 +75,25 @@ variable cluster_name {
   default     = "mycluster"
   description = "provide cluster name"
 }
+
+variable "ports" {
+  type = list(object({
+    from_port = number
+    to_port   = number
+  }))
+  default = [
+    { from_port = 80, to_port = 80 },
+    { from_port = 22, to_port = 22 }
+  ]
+}
+
+variable "subnet" {
+  type = list(object({
+    cidr        = string
+    subnet_name = string
+  }))
+  default = [
+    { cidr = "10.0.1.0/24", subnet_name = "subnet1" },
+    { cidr = "10.0.2.0/24", subnet_name = "subnet2" }
+  ]
+}
