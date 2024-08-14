@@ -31,6 +31,6 @@ sudo wget https://get.helm.sh/helm-v3.15.3-linux-amd64.tar.gz
 sudo tar -zxvf helm-v3.15.3-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/helm
 
-ssh-keygen -f $HOME/.ssh/id_rsa -t rsa -N ''
+ssh-keygen -f /home/ec2-user/.ssh/id_rsa -t rsa -N ''
 
-echo "jenkins ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers > /dev/null #???
+echo "jenkins ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers > /dev/null 
